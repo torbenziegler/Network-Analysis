@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+      - GF_DATABASE_HOST=influxdb:8086
+      - GF_DATABASE_NAME=grafana
+      - GF_DATABASE_USER=grafana
+      - GF_DATABASE_PASSWORD=grafana
+    depends_on:
+      - influxdb
+
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DB=grafana
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=secret
+      - INFLUXDB_USER=grafana
+      - INFLUXDB_USER_PASSWORD=grafana
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+
+volumes:
+  grafana-storage:
+  influxdb-storage:
