@@ -1,2 +1,4 @@
 speedtest-cli
 influxdb-client
+psutil
+ping3
